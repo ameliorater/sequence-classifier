@@ -50,20 +50,23 @@ print("Classification report for classifier %s:\n%s\n"
 #       % (grid.best_params_, grid.best_score_))
 
 
-pca = PCA(n_components=2)
+pca = PCA(n_components=3)
 pComps = pca.fit_transform(data)
-print(np.shape(pComps))
-final = np.append(pComps, labels)
-print(np.shape(final))
 
 labelsToInts = {b'EI': 0, b'IE': 1, b'N': 2}
-labelInts = []
-for i, label in enumerate(labels):
-    labelInts.append(labelsToInts[label])
+labelInts = list(map(lambda s: labelsToInts[s], labels))
 
-plt.scatter(pComps[:,0], pComps[:,1], c=labelInts)
-# plt.plot(pComps, 'o')
-plt.title("PCA 2D Projection of Sequence Data")
-plt.xlabel("First Principal Component")
-plt.ylabel("Second Principal Component")
+plt.suptitle("PCA 2D Projection of Sequence Data", fontsize=16)
+plt.xlabel("1st Principal Component", fontsize=16)
+plt.ylabel("2nd Principal Component", fontsize=16)
+
+# ax = plt.axes() 
+# ax.scatter3D(pComps[:,0], pComps[:,1], pComps[:,2], c=labelInts)
+scatter = plt.scatter(pComps[:,0], pComps[:,1], c=labelInts, alpha = 0.5)
+plt.legend(handles=scatter.legend_elements()[0], labels=['EI','IE','N'])
+
+# disp = metrics.plot_confusion_matrix(classifier, testData, testLabels)
+# disp.figure_.suptitle("Confusion Matrix")
+# print("Confusion matrix:\n%s" % disp.confusion_matrix)
+
 plt.show()
