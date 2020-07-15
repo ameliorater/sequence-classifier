@@ -34,16 +34,18 @@ print("Classification report for classifier %s:\n%s\n"
 
 
 # hyperparameter tuning
-# C_range = np.logspace(-1, 1, base=10, num=5)
-# gamma_range = np.logspace(-4, -2, base=10, num=5)
-# param_grid = {'C': C_range, 'gamma': gamma_range}
-# cv = ShuffleSplit(n_splits=3, test_size=0.2, train_size=0.2)
-# cv.split(data)
-# grid = GridSearchCV(svm.SVC(), param_grid=param_grid, cv=cv, verbose=1)
-# grid.fit(data, labels)
+tuneHParams = False
+if tuneHParams:
+    C_range = np.logspace(-1, 1, base=10, num=5)
+    gamma_range = np.logspace(-4, -2, base=10, num=5)
+    param_grid = {'C': C_range, 'gamma': gamma_range}
+    cv = ShuffleSplit(n_splits=3, test_size=0.2, train_size=0.2)
+    cv.split(data)
+    grid = GridSearchCV(svm.SVC(), param_grid=param_grid, cv=cv, verbose=1)
+    grid.fit(data, labels)
 
-# print("The best parameters are %s with a score of %0.2f"
-#       % (grid.best_params_, grid.best_score_))
+    print("The best parameters are %s with a score of %0.2f"
+        % (grid.best_params_, grid.best_score_))
 
 
 # get principal components of data
@@ -55,8 +57,8 @@ labelsToInts = {b'EI': 0, b'IE': 1, b'N': 2}
 labelInts = list(map(lambda s: labelsToInts[s], labels))
 
 # 3D plot
-# ax = plt.axes() 
-# ax.scatter3D(pComps[:,0], pComps[:,1], pComps[:,2], c=labelInts)
+# ax = plt.axes(projection="3d") 
+# scatter = ax.scatter3D(pComps[:,0], pComps[:,1], pComps[:,2], c=labelInts)
 
 # 2D plot
 scatter = plt.scatter(pComps[:,0], pComps[:,1], c=labelInts, alpha = 0.5)
